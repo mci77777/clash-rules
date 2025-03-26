@@ -1,0 +1,326 @@
+# Profile Enhancement Merge Template for Clash Verge
+proxy-groups:
+  - name: 低延迟
+    include-all: true
+    type: select
+    proxies:
+      - 自动选择
+
+  - name: 高带宽
+    include-all: true
+    type: select
+    proxies:
+      - 自动选择
+
+  - name: 链式代理
+    type: relay
+    proxies:
+      - 低延迟
+      - webshare
+      - vless://7a9882b3-062f-352f-8432-5e7985ba166a@47.79.40.75:5675?flow=xtls-rprx-vision&encryption=none&type=tcp&security=reality&sni=learn.microsoft.com&fp=random&pbk=--yc_cTzaarsZmmu2eBkVkzEB19IpasL82HeFxT3W1A&sid=45253e84be9a6153&#VLESS_R_5675[us]
+      - vless://7a9882b3-062f-352f-8432-5e7985ba166a@47.79.40.75:5675?flow=xtls-rprx-vision&encryption=none&type=tcp&security=reality&sni=learn.microsoft.com&fp=random&pbk=--yc_cTzaarsZmmu2eBkVkzEB19IpasL82HeFxT3W1A&sid=45253e84be9a6153&#VLESS_R_5675[us]
+
+  - name: 自动选择
+    type: url-test
+    include-all: true
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+
+rule-providers:
+  ai:
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/ai.yaml
+    url: "https://fastly.jsdelivr.net/gh/MadisonWirtanen/WARP-Clash-with-ZJU-Rules@main/ai.yaml"
+    interval: 86400
+
+  AI:
+    type: http
+    behavior: classical
+    url: https://github.com/Repcz/Tool/raw/X/Clash/Rules/AI.list
+    path: ./rule-providers/AI.list
+    interval: 86400
+  
+  OpenAI: 
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/OpenAI.yaml
+    url: "https://cdn.jsdelivr.net/gh/zuluion/Clash-Template-Config@master/Filter/OpenAI.yaml"
+    interval: 86400
+    
+  Gemini: 
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/Gemini.yaml
+    url: "https://cdn.jsdelivr.net/gh/zuluion/Clash-Template-Config@master/Filter/Gemini.yaml"
+    interval: 86400
+
+  Claude: 
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/Claude.yaml
+    url: "https://cdn.jsdelivr.net/gh/zuluion/Clash-Template-Config@master/Filter/Claude.yaml"
+    interval: 86400
+
+  AD:
+    type: http
+    behavior: classical
+    url: https://adrules.top/adrules_domainset.txt
+    path: ./rule-providers/AD.list
+    interval: 86400
+
+  AdBlock:
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/AdBlock.yaml
+    url: "https://cdn.jsdelivr.net/gh/zuluion/Clash-Template-Config@master/Filter/AdBlock.yaml"
+    interval: 86400
+    
+  BanAD:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list"
+    path: ./ruleset/BanAD.yaml
+    interval: 86400
+
+  BanProgramAD:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list"
+    path: ./ruleset/BanProgramAD.yaml
+    interval: 86400
+
+  BanEasyList:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyList.list"
+    path: ./ruleset/BanEasyList.yaml
+    interval: 86400
+
+  reject:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
+    path: ./ruleset/reject.yaml
+    interval: 86400
+
+  collection: 
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/collection.yaml
+    url: "https://gist.githubusercontent.com/cnfree8964/0864fd1d2e88936a095fb40d74ce4993/raw/collection.yaml"
+    interval: 86400
+
+  gfw:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
+    path: ./ruleset/gfw.yaml
+    interval: 86400
+
+  proxy:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
+    path: ./ruleset/proxy.yaml
+    interval: 86400
+
+  tld-not-cn:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt"
+    path: ./ruleset/tld-not-cn.yaml
+    interval: 86400
+
+  ProxyGFWlist:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list"
+    path: ./ruleset/BanEasyList.yaml
+    interval: 86400
+
+  ProxyClient: 
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/ProxyClient.yaml
+    url: "https://cdn.jsdelivr.net/gh/zuluion/Clash-Template-Config@master/Filter/ProxyClient.yaml"
+    interval: 86400
+
+  ChinaDomain:
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/ChinaDomain.yaml
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+    interval: 86400
+
+  ChinaCompanyIp:
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/ChinaCompanyIp.yaml
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
+    interval: 86400
+
+  China: 
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./rules/China.yaml
+    url: "https://cdn.jsdelivr.net/gh/zuluion/Clash-Template-Config@master/Filter/China.yaml"
+    interval: 86400
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+
+profile:
+  store-selected: true
+
+dns:
+  enable: true
+  ipv6: false
+  listen: 0.0.0.0:53
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+  - https://doh.pub/dns-query
+  - https://dns.alidns.com/dns-query
+  prefer-h3: true
+  nameserver-policy: # 国内的DNS服务器没必要使用doh/dot加密，不加密速度更快
+    geosite:cn:
+    # - system
+    - 223.5.5.5
+    - 114.114.114.114
+    - 180.184.1.1
+    - 119.29.29.29
+    - 180.76.76.76
+  proxy-server-nameserver: # 解析代理节点的DNS服务器
+  - https://doh.pub/dns-query
+  - https://dns.alidns.com/dns-query
+  fallback: []
+  fake-ip-filter: # fake-ip的副作用，导致Windows上会显示无网络，屏蔽微软的一些域名即可解决
+  - '*.lan'
+  - 'localhost.ptlogin2.qq.com'
+  - 'localhost.sec.qq.com'
+  - dns.msftncsi.com
+  - www.msftncsi.com
+  - www.msftconnecttest.com
+unified-delay: true
+tcp-concurrent: true
+
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  device: utun0
+  mtu: 1500
+  strict-route: true
+  gso: true
+  gso-max-size: 65536
+  udp-timeout: 300
+  iproute2-table-index: 2022
+  iproute2-rule-index: 9000
+  endpoint-independent-nat: false
+  route-address-set:
+    - ruleset-1
+  route-exclude-address-set:
+    - ruleset-2
+  route-address:
+    - 0.0.0.0/1
+    - 128.0.0.0/1
+    - "::/1"
+    - "8000::/1"
+  route-exclude-address:
+    - 192.168.0.0/16
+    - fc00::/7
+  include-interface:
+    - eth0
+  exclude-interface:
+    - eth1
+  include-uid:
+    - 0
+  include-uid-range:
+    - 1000:9999
+  exclude-uid:
+    - 1000
+  exclude-uid-range:
+    - 1000:9999
+  include-android-user:
+    - 0
+    - 10
+  include-package:
+    - com.android.chrome
+  exclude-package:
+    - com.android.captiveportallogin
+
+rules:
+  - RULE-SET,ai,链式代理
+  - RULE-SET,AI,链式代理
+  - RULE-SET,OpenAI,链式代理
+  - RULE-SET,Gemini,链式代理
+  - RULE-SET,Claude,链式代理
+  - DOMAIN-SUFFIX,oaistatic.com,链式代理
+  - DOMAIN-SUFFIX,cdn.oaistatic.com,链式代理
+  - DOMAIN-SUFFIX,gstatic.com,链式代理
+
+  - DOMAIN-SUFFIX,googleapis.cn,低延迟
+  - DOMAIN-SUFFIX,oncatapult.com,DIRECT
+  - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  - DOMAIN-SUFFIX,linux.do,DIRECT
+
+  - GEOSITE,category-ads-all,REJECT
+
+  - RULE-SET,AD,REJECT
+  - RULE-SET,AdBlock,REJECT
+  - RULE-SET,reject,REJECT
+  - RULE-SET,BanAD,REJECT
+  - RULE-SET,BanProgramAD,REJECT
+  - RULE-SET,BanEasyList,REJECT
+
+  - GEOSITE,private,DIRECT
+  - GEOIP,private,DIRECT,no-resolve
+
+  - GEOSITE,category-scholar-!cn,低延迟
+  - GEOSITE,microsoft@cn,DIRECT
+  - GEOSITE,steam@cn,DIRECT
+  - GEOSITE,category-games@cn,DIRECT
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT,no-resolve
+  
+  # - RULE-SET,gfw,低延迟
+  # - RULE-SET,proxy,低延迟
+  # - RULE-SET,tld-not-cn,低延迟
+  # - RULE-SET,ProxyGFWlist,低延迟
+  # - RULE-SET,ProxyClient,低延迟
+  - RULE-SET,ChinaDomain,DIRECT,no-resolve
+  - RULE-SET,ChinaCompanyIp,DIRECT,no-resolve
+  - RULE-SET,cncidr,DIRECT,no-resolve
+  - RULE-SET,China,DIRECT,no-resolve
+  - RULE-SET,lancidr,DIRECT,no-resolve
+  - RULE-SET,collection,DIRECT,no-resolve
+
+  - GEOSITE,geolocation-cn,DIRECT
+  - MATCH,低延迟
