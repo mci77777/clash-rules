@@ -16,6 +16,7 @@ DOMAIN,makersuite.google.com
 
 # 域名后缀匹配
 DOMAIN-SUFFIX,perplexity.ai
+DOMAIN-SUFFIX,genspark.ai
 DOMAIN-SUFFIX,chatgpt.com
 DOMAIN-SUFFIX,auth0.com
 DOMAIN-SUFFIX,client-api.arkoselabs.com
