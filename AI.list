@@ -8,6 +8,7 @@ DOMAIN-KEYWORD,CURSOR
 DOMAIN-KEYWORD,colab
 DOMAIN-KEYWORD,developerprofiles
 DOMAIN-KEYWORD,generativelanguage
+DOMAIN-KEYWORD,openai
 
 DOMAIN,ai.google.dev
 DOMAIN,alkalimakersuite-pa.clients6.google.com
@@ -15,6 +16,7 @@ DOMAIN,makersuite.google.com
 
 # 域名后缀匹配
 DOMAIN-SUFFIX,perplexity.ai
+DOMAIN-SUFFIX,openai.com
 DOMAIN-SUFFIX,genspark.ai
 DOMAIN-SUFFIX,auth0.com
 DOMAIN-SUFFIX,client-api.arkoselabs.com
