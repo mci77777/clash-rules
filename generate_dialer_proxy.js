@@ -133,7 +133,8 @@ function overwriteProxyGroups(params) {
     proxies: [
       "DIRECT",
       ...regionNodeGroups.map(g => g.name),
-      manualSelectGroup.name,
+      otherNodeGroup ? otherNodeGroup.name : null,
+      "手动选择",
     ].filter(Boolean),
   };
 
@@ -214,16 +215,23 @@ function overwriteProxyGroups(params) {
     proxies: buildProxies(defaultProxy, extras),
   }));
 
+  const manualSelectGroup = { name: "手动选择", type: "select", proxies: frontProxyNames };
+  const allAutoGroup = { name: "ALL - 自动选择", type: "url-test", proxies: frontProxyNames, ...TEST_BASE };
+  const autoSelectGroup = { name: "♻️ 自动选择", type: "url-test", proxies: frontProxyNames, ...TEST_BASE };
+  const fallbackGroup = { name: "⚠️ 故障转移", type: "fallback", proxies: frontProxyNames, ...TEST_BASE };
+
   const groups = [
     globalGroup,
     frontNodeGroup,
     landingNodeGroup,
     manualSelectGroup,
+    autoSelectGroup,
+    fallbackGroup,
+    allAutoGroup,
     ...functionalGroups,
     { name: "🍃 漏网之鱼", type: "select", icon: getIconForGroup("🍃 漏网之鱼"), proxies: buildProxies(proxyName) },
     { name: "🛑 广告拦截", type: "select", icon: getIconForGroup("🛑 广告拦截"), proxies: ["REJECT", "DIRECT"] },
-    { name: "🎯 全球直连", type: "select", icon: getIconForGroup("🎯 全球直连"), proxies: ["DIRECT", "REJECT"] },
-    netflixNodeGroup,
+    { name: "🎯 全球直连", type: "select", proxies: ["DIRECT", "REJECT"] },
     ...regionAutoGroups,
     ...regionNodeGroups,
     landingAutoGroup,
