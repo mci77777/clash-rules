@@ -129,7 +129,12 @@ function overwriteProxyGroups(params) {
     name: frontNodeName,
     type: "select",
     icon: getIconForGroup(frontNodeName),
-    proxies: ["DIRECT", ...frontProxyNames],
+    proxies: [
+      "DIRECT",
+      ...regionNodeGroups.map(g => g.name),
+      otherNodeGroup ? otherNodeGroup.name : null,
+      "手动选择",
+    ].filter(Boolean),
   };
 
   // 落地组（含自动测速与手动）
@@ -181,21 +186,23 @@ function overwriteProxyGroups(params) {
     proxies: [landingNodeName, "♻️ 自动选择", "手动选择", "⚠️ 故障转移", frontNodeName, "DIRECT"],
   };
 
+  const manualSelectGroup = { name: "手动选择", type: "select", proxies: frontProxyNames };
+  const allAutoGroup = { name: "ALL - 自动选择", type: "url-test", proxies: frontProxyNames, ...TEST_BASE };
+  const autoSelectGroup = { name: "♻️ 自动选择", type: "url-test", proxies: frontProxyNames, ...TEST_BASE };
+  const fallbackGroup = { name: "⚠️ 故障转移", type: "fallback", proxies: frontProxyNames, ...TEST_BASE };
+
   const groups = [
     globalGroup,
     frontNodeGroup,
     landingNodeGroup,
-    { name: "手动选择", type: "select", proxies: frontProxyNames },
-    {
-      name: "♻️ 自动选择",
-      type: "select",
-      proxies: ["ALL - 自动选择", ...regionAutoGroups.map(g => g.name), otherAutoGroup ? otherAutoGroup.name : null].filter(Boolean),
-    },
-    { name: "⚠️ 故障转移", type: "fallback", proxies: frontProxyNames, ...TEST_BASE },
-    { name: "ALL - 自动选择", type: "url-test", proxies: frontProxyNames, hidden: true, ...TEST_BASE },
+    manualSelectGroup,
+    autoSelectGroup,
+    fallbackGroup,
+    allAutoGroup,
     ...functionalGroups,
     { name: "🍃 漏网之鱼", type: "select", icon: getIconForGroup("🍃 漏网之鱼"), proxies: [landingNodeName, proxyName, frontNodeName, "DIRECT"] },
     { name: "🛑 广告拦截", type: "select", icon: getIconForGroup("🛑 广告拦截"), proxies: ["REJECT", "DIRECT"] },
+    { name: "🎯 全球直连", type: "select", proxies: ["DIRECT", "REJECT"] },
     ...regionAutoGroups,
     ...regionNodeGroups,
     otherAutoGroup,
