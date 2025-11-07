@@ -41,9 +41,8 @@ function getIconForGroup(groupName) {
     case "💻 微软服务": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png";
     case "🍎 苹果服务": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png";
     case "🔒 IP 伪装":  return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Lock.png";
-    case "🎬 奈飞服务": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png";
-    case "🎥 奈飞节点": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png";
-    case "🍃 漏网之鱼": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png";
+    case "🎬 奈飞分组": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png";
+    case "🐟 漏网之鱼": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png";
     case "🛑 广告拦截": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png";
     case "🎯 全球直连": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png";
     case "🌍 落地节点": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Earth.png";
@@ -133,7 +132,6 @@ function overwriteProxyGroups(params) {
     proxies: [
       "DIRECT",
       ...regionNodeGroups.map(g => g.name),
-      otherNodeGroup ? otherNodeGroup.name : null,
       "手动选择",
     ].filter(Boolean),
   };
@@ -170,27 +168,15 @@ function overwriteProxyGroups(params) {
   const buildProxies = (preferredFirst, extras = []) => {
     const base = [
       preferredFirst,
-      landingNodeName,
-      ...extras,
       proxyName,
       frontNodeName,
       manualSelectGroup.name,
       "DIRECT",
       ...regionNodeGroups.map(g => g.name),
+      ...extras,
     ];
     return [...new Set(base.filter(Boolean))];
   };
-
-  const netflixPattern = /(NF|奈飞|解锁|Netflix|NETFLIX)/i;
-  const netflixProxyNames = frontProxyNames.filter(name => netflixPattern.test(name));
-  const netflixNodeGroup = {
-    name: "🎥 奈飞节点",
-    type: "select",
-    icon: getIconForGroup("🎥 奈飞节点"),
-    proxies: netflixProxyNames.length ? netflixProxyNames : frontProxyNames,
-    hidden: !netflixProxyNames.length,
-  };
-  const netflixExtras = netflixProxyNames.length ? [netflixNodeGroup.name] : [];
 
   const categoryGroups = [
     { name: "🤖 OpenAI", defaultProxy: landingNodeName },
@@ -198,40 +184,32 @@ function overwriteProxyGroups(params) {
     { name: "🤖 Gemini", defaultProxy: landingNodeName },
     { name: "🤖 XAI", defaultProxy: landingNodeName },
     { name: "🤖 自定义 AI", defaultProxy: landingNodeName },
-    { name: "📱 社交媒体", defaultProxy: proxyName },
+    { name: "🎬 奈飞分组", defaultProxy: proxyName },
+    { name: "� 社交媒体", defaultProxy: proxyName },
     { name: "📺 YouTube", defaultProxy: proxyName },
-    { name: "🎵 Spotify", defaultProxy: proxyName },
+    { name: "� Spotify", defaultProxy: proxyName },
     { name: "🎮 游戏平台", defaultProxy: proxyName },
     { name: "💻 微软服务", defaultProxy: proxyName },
-    { name: "🍎 苹果服务", defaultProxy: proxyName },
-    { name: "🎬 奈飞服务", defaultProxy: proxyName, extras: netflixExtras },
+    { name: "� 苹果服务", defaultProxy: proxyName },
     { name: "🔒 IP 伪装", defaultProxy: proxyName },
   ];
 
-  const functionalGroups = categoryGroups.map(({ name, defaultProxy, extras = [] }) => ({
+  const functionalGroups = categoryGroups.map(({ name, defaultProxy }) => ({
     name,
     type: "select",
     icon: getIconForGroup(name),
-    proxies: buildProxies(defaultProxy, extras),
+    proxies: buildProxies(defaultProxy),
   }));
-
-  const manualSelectGroup = { name: "手动选择", type: "select", proxies: frontProxyNames };
-  const allAutoGroup = { name: "ALL - 自动选择", type: "url-test", proxies: frontProxyNames, ...TEST_BASE };
-  const autoSelectGroup = { name: "♻️ 自动选择", type: "url-test", proxies: frontProxyNames, ...TEST_BASE };
-  const fallbackGroup = { name: "⚠️ 故障转移", type: "fallback", proxies: frontProxyNames, ...TEST_BASE };
 
   const groups = [
     globalGroup,
     frontNodeGroup,
     landingNodeGroup,
     manualSelectGroup,
-    autoSelectGroup,
-    fallbackGroup,
-    allAutoGroup,
     ...functionalGroups,
-    { name: "🍃 漏网之鱼", type: "select", icon: getIconForGroup("🍃 漏网之鱼"), proxies: buildProxies(proxyName) },
+    { name: "🐟 漏网之鱼", type: "select", icon: getIconForGroup("🐟 漏网之鱼"), proxies: buildProxies(proxyName) },
     { name: "🛑 广告拦截", type: "select", icon: getIconForGroup("🛑 广告拦截"), proxies: ["REJECT", "DIRECT"] },
-    { name: "🎯 全球直连", type: "select", proxies: ["DIRECT", "REJECT"] },
+    { name: "🎯 全球直连", type: "select", icon: getIconForGroup("🎯 全球直连"), proxies: ["DIRECT", "REJECT"] },
     ...regionAutoGroups,
     ...regionNodeGroups,
     landingAutoGroup,
