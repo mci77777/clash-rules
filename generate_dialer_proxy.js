@@ -6,6 +6,7 @@
 const proxyName = "🔮 全局策略";
 const frontNodeName = "🔗 前置节点组";
 const landingNodeName = "🌍 落地节点";
+const landingPrefix = "[落地]";
 
 const nodeFilterRegex = /^(?!.*(官网|套餐|流量| expiring|剩余|时间|重置|URL|到期|过期|机场|group|sub|订阅|查询|续费|观看|频道|客服|M3U|车费|车友|上车|通知|公告|严禁)).*$/i;
 
@@ -65,7 +66,7 @@ function cleanProxyFields(params) {
 function generateLandingNodes(originalProxies) {
   return (originalProxies || []).map(proxy => {
     const landingNode = JSON.parse(JSON.stringify(proxy));
-    landingNode.name = `[落地]${proxy.name}`;
+    landingNode.name = `${landingPrefix}${proxy.name}`;
     landingNode['dialer-proxy'] = frontNodeName;
     landingNode.udp = false;
     return landingNode;
@@ -92,13 +93,10 @@ function overwriteProxyGroups(params) {
 
   // 识别地区
   const availableCountryCodes = new Set();
-  const otherProxies = [];
   for (const n of frontProxyNames) {
-    let matched = false;
     for (const r of countryRegions) {
-      if (r.regex.test(n)) { availableCountryCodes.add(r.code); matched = true; break; }
+      if (r.regex.test(n)) { availableCountryCodes.add(r.code); break; }
     }
-    if (!matched) otherProxies.push(n);
   }
 
   // 区域自动与手动组（基于前置）
@@ -120,20 +118,6 @@ function overwriteProxyGroups(params) {
     });
   }
 
-  const otherAutoGroup = otherProxies.length ? {
-    name: "OTHERS - 自动选择",
-    type: "url-test",
-    proxies: otherProxies,
-    hidden: true,
-    ...TEST_BASE,
-  } : null;
-
-  const otherNodeGroup = otherProxies.length ? {
-    name: "其他 - 节点选择",
-    type: "select",
-    proxies: ["OTHERS - 自动选择", ...otherProxies],
-  } : null;
-
   const manualSelectGroup = {
     name: "手动选择",
     type: "select",
@@ -149,7 +133,6 @@ function overwriteProxyGroups(params) {
     proxies: [
       "DIRECT",
       ...regionNodeGroups.map(g => g.name),
-      otherNodeGroup ? otherNodeGroup.name : null,
       manualSelectGroup.name,
     ].filter(Boolean),
   };
@@ -193,7 +176,6 @@ function overwriteProxyGroups(params) {
       manualSelectGroup.name,
       "DIRECT",
       ...regionNodeGroups.map(g => g.name),
-      otherNodeGroup ? otherNodeGroup.name : null,
     ];
     return [...new Set(base.filter(Boolean))];
   };
@@ -244,8 +226,6 @@ function overwriteProxyGroups(params) {
     netflixNodeGroup,
     ...regionAutoGroups,
     ...regionNodeGroups,
-    otherAutoGroup,
-    otherNodeGroup,
     landingAutoGroup,
     landingManualGroup,
   ].filter(Boolean);
@@ -265,6 +245,7 @@ function overwriteDns(params) {
 function main(params) {
   if (!params || !params.proxies || !params.proxies.length) return params || {};
   params.proxies = params.proxies.filter(p => nodeFilterRegex.test(p.name));
+  params.proxies = params.proxies.filter(p => !p.name.startsWith(landingPrefix));
   cleanProxyFields(params);
   overwriteRules(params);
   overwriteProxyGroups(params);
