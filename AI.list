@@ -19,6 +19,7 @@ DOMAIN,makersuite.google.com
 
 # 域名后缀匹配
 DOMAIN-SUFFIX,bagevm.com
+DOMAIN-SUFFIX,packycode.com
 DOMAIN-KEYWORD,bagevm
 DOMAIN-SUFFIX,cursor.sh
 DOMAIN-SUFFIX,cursor-cdn.com
