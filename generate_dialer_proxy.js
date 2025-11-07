@@ -26,7 +26,7 @@ const countryRegions = [
 
 function getIconForGroup(groupName) {
   switch (groupName) {
-    case "🔮 全局策略": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Rocket.png";
+    case "🔮 全局策略": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png";
     case "📱 社交媒体": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Facebook.png";
     case "🤖 OpenAI":
     case "🤖 Claude":
@@ -45,8 +45,9 @@ function getIconForGroup(groupName) {
     case "🍃 漏网之鱼": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png";
     case "🛑 广告拦截": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png";
     case "🎯 全球直连": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png";
-    case "🌍 落地节点": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png";
+    case "🌍 落地节点": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Earth.png";
     case "🔗 前置节点组": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png";
+    case "手动选择":   return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Manual.png";
     default: return "";
   }
 }
@@ -137,6 +138,7 @@ function overwriteProxyGroups(params) {
     name: "手动选择",
     type: "select",
     proxies: frontProxyNames,
+    icon: getIconForGroup("手动选择"),
   };
 
   // 前置组
@@ -184,8 +186,8 @@ function overwriteProxyGroups(params) {
   const buildProxies = (preferredFirst, extras = []) => {
     const base = [
       preferredFirst,
-      ...extras,
       landingNodeName,
+      ...extras,
       proxyName,
       frontNodeName,
       manualSelectGroup.name,
