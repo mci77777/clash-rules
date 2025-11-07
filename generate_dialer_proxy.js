@@ -6,6 +6,7 @@
 const proxyName = "🔮 全局策略";
 const frontNodeName = "🔗 前置节点组";
 const landingNodeName = "🌍 落地节点";
+const landingPrefix = "[落地]";
 
 const nodeFilterRegex = /^(?!.*(官网|套餐|流量| expiring|剩余|时间|重置|URL|到期|过期|机场|group|sub|订阅|查询|续费|观看|频道|客服|M3U|车费|车友|上车|通知|公告|严禁)).*$/i;
 
@@ -26,18 +27,28 @@ const countryRegions = [
 
 function getIconForGroup(groupName) {
   switch (groupName) {
+    case "🔮 全局策略": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png";
     case "📱 社交媒体": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Facebook.png";
-    case "🤖 AI 服务":  return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bot.png";
+    case "🤖 OpenAI":
+    case "🤖 Claude":
+    case "🤖 Gemini":
+    case "🤖 XAI":
+    case "🤖 自定义 AI":
+      return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png";
     case "📺 YouTube":  return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png";
     case "🎵 Spotify":  return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Spotify.png";
     case "🎮 游戏平台": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png";
     case "💻 微软服务": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png";
     case "🍎 苹果服务": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png";
     case "🔒 IP 伪装":  return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Lock.png";
+    case "🎬 奈飞服务": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png";
+    case "🎥 奈飞节点": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png";
     case "🍃 漏网之鱼": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png";
     case "🛑 广告拦截": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png";
-    case "🌍 落地节点": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png";
+    case "🎯 全球直连": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png";
+    case "🌍 落地节点": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Earth.png";
     case "🔗 前置节点组": return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png";
+    case "手动选择":   return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Manual.png";
     default: return "";
   }
 }
@@ -55,7 +66,7 @@ function cleanProxyFields(params) {
 function generateLandingNodes(originalProxies) {
   return (originalProxies || []).map(proxy => {
     const landingNode = JSON.parse(JSON.stringify(proxy));
-    landingNode.name = `[落地]${proxy.name}`;
+    landingNode.name = `${landingPrefix}${proxy.name}`;
     landingNode['dialer-proxy'] = frontNodeName;
     landingNode.udp = false;
     return landingNode;
@@ -82,13 +93,10 @@ function overwriteProxyGroups(params) {
 
   // 识别地区
   const availableCountryCodes = new Set();
-  const otherProxies = [];
   for (const n of frontProxyNames) {
-    let matched = false;
     for (const r of countryRegions) {
-      if (r.regex.test(n)) { availableCountryCodes.add(r.code); matched = true; break; }
+      if (r.regex.test(n)) { availableCountryCodes.add(r.code); break; }
     }
-    if (!matched) otherProxies.push(n);
   }
 
   // 区域自动与手动组（基于前置）
@@ -110,19 +118,12 @@ function overwriteProxyGroups(params) {
     });
   }
 
-  const otherAutoGroup = otherProxies.length ? {
-    name: "OTHERS - 自动选择",
-    type: "url-test",
-    proxies: otherProxies,
-    hidden: true,
-    ...TEST_BASE,
-  } : null;
-
-  const otherNodeGroup = otherProxies.length ? {
-    name: "其他 - 节点选择",
+  const manualSelectGroup = {
+    name: "手动选择",
     type: "select",
-    proxies: ["OTHERS - 自动选择", ...otherProxies],
-  } : null;
+    proxies: frontProxyNames,
+    icon: getIconForGroup("手动选择"),
+  };
 
   // 前置组
   const frontNodeGroup = {
@@ -158,33 +159,61 @@ function overwriteProxyGroups(params) {
     proxies: [landingAutoGroup.name, landingManualGroup.name, "DIRECT"],
   };
 
-  // 常用功能分组模板（默认走落地）
-  const functionalGroupNames = [
-    "🤖 AI 服务","📱 社交媒体","📺 YouTube","🎵 Spotify",
-    "🎮 游戏平台","💻 微软服务","🍎 苹果服务","🔒 IP 伪装"
-  ];
-  const functionalGroups = functionalGroupNames.map(name => ({
-    name,
-    type: "select",
-    icon: getIconForGroup(name),
-    url: TEST_URL,
-    proxies: [
-      landingNodeName,
-      proxyName,
-      frontNodeName,
-      "DIRECT",
-      "ALL - 自动选择",
-      ...regionNodeGroups.map(g => g.name),
-      otherNodeGroup ? otherNodeGroup.name : null,
-    ].filter(Boolean),
-  }));
-
   // 全局策略组
   const globalGroup = {
     name: proxyName,
     type: "select",
-    proxies: [landingNodeName, "♻️ 自动选择", "手动选择", "⚠️ 故障转移", frontNodeName, "DIRECT"],
+    icon: getIconForGroup(proxyName),
+    proxies: [landingNodeName, frontNodeName, manualSelectGroup.name, "DIRECT"],
   };
+
+  const buildProxies = (preferredFirst, extras = []) => {
+    const base = [
+      preferredFirst,
+      landingNodeName,
+      ...extras,
+      proxyName,
+      frontNodeName,
+      manualSelectGroup.name,
+      "DIRECT",
+      ...regionNodeGroups.map(g => g.name),
+    ];
+    return [...new Set(base.filter(Boolean))];
+  };
+
+  const netflixPattern = /(NF|奈飞|解锁|Netflix|NETFLIX)/i;
+  const netflixProxyNames = frontProxyNames.filter(name => netflixPattern.test(name));
+  const netflixNodeGroup = {
+    name: "🎥 奈飞节点",
+    type: "select",
+    icon: getIconForGroup("🎥 奈飞节点"),
+    proxies: netflixProxyNames.length ? netflixProxyNames : frontProxyNames,
+    hidden: !netflixProxyNames.length,
+  };
+  const netflixExtras = netflixProxyNames.length ? [netflixNodeGroup.name] : [];
+
+  const categoryGroups = [
+    { name: "🤖 OpenAI", defaultProxy: landingNodeName },
+    { name: "🤖 Claude", defaultProxy: landingNodeName },
+    { name: "🤖 Gemini", defaultProxy: landingNodeName },
+    { name: "🤖 XAI", defaultProxy: landingNodeName },
+    { name: "🤖 自定义 AI", defaultProxy: landingNodeName },
+    { name: "📱 社交媒体", defaultProxy: proxyName },
+    { name: "📺 YouTube", defaultProxy: proxyName },
+    { name: "🎵 Spotify", defaultProxy: proxyName },
+    { name: "🎮 游戏平台", defaultProxy: proxyName },
+    { name: "💻 微软服务", defaultProxy: proxyName },
+    { name: "🍎 苹果服务", defaultProxy: proxyName },
+    { name: "🎬 奈飞服务", defaultProxy: proxyName, extras: netflixExtras },
+    { name: "🔒 IP 伪装", defaultProxy: proxyName },
+  ];
+
+  const functionalGroups = categoryGroups.map(({ name, defaultProxy, extras = [] }) => ({
+    name,
+    type: "select",
+    icon: getIconForGroup(name),
+    proxies: buildProxies(defaultProxy, extras),
+  }));
 
   const manualSelectGroup = { name: "手动选择", type: "select", proxies: frontProxyNames };
   const allAutoGroup = { name: "ALL - 自动选择", type: "url-test", proxies: frontProxyNames, ...TEST_BASE };
@@ -200,13 +229,11 @@ function overwriteProxyGroups(params) {
     fallbackGroup,
     allAutoGroup,
     ...functionalGroups,
-    { name: "🍃 漏网之鱼", type: "select", icon: getIconForGroup("🍃 漏网之鱼"), proxies: [landingNodeName, proxyName, frontNodeName, "DIRECT"] },
+    { name: "🍃 漏网之鱼", type: "select", icon: getIconForGroup("🍃 漏网之鱼"), proxies: buildProxies(proxyName) },
     { name: "🛑 广告拦截", type: "select", icon: getIconForGroup("🛑 广告拦截"), proxies: ["REJECT", "DIRECT"] },
     { name: "🎯 全球直连", type: "select", proxies: ["DIRECT", "REJECT"] },
     ...regionAutoGroups,
     ...regionNodeGroups,
-    otherAutoGroup,
-    otherNodeGroup,
     landingAutoGroup,
     landingManualGroup,
   ].filter(Boolean);
@@ -226,6 +253,7 @@ function overwriteDns(params) {
 function main(params) {
   if (!params || !params.proxies || !params.proxies.length) return params || {};
   params.proxies = params.proxies.filter(p => nodeFilterRegex.test(p.name));
+  params.proxies = params.proxies.filter(p => !p.name.startsWith(landingPrefix));
   cleanProxyFields(params);
   overwriteRules(params);
   overwriteProxyGroups(params);
