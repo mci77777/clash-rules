@@ -144,17 +144,18 @@ function overwriteProxyGroups(params) {
     hidden: true,
     ...TEST_BASE,
   };
-  const landingManualGroup = {
-    name: "🧭 落地节点 - 手动选择",
-    type: "select",
-    proxies: landingProxyNames,
-    hidden: false,
-  };
+  
+  // 落地节点组：直接包含自动选择 + 各国家选择 + 手动选择 + DIRECT
   const landingNodeGroup = {
     name: landingNodeName,
     type: "select",
     icon: getIconForGroup(landingNodeName),
-    proxies: [landingAutoGroup.name, landingManualGroup.name, "DIRECT"],
+    proxies: [
+      landingAutoGroup.name,
+      ...regionNodeGroups.map(g => g.name),
+      manualSelectGroup.name,
+      "DIRECT"
+    ],
   };
 
   // 全局策略组
@@ -231,7 +232,6 @@ function overwriteProxyGroups(params) {
     ...regionAutoGroups,
     ...regionNodeGroups,
     landingAutoGroup,
-    landingManualGroup,
   ].filter(Boolean);
 
   params["proxy-groups"] = groups;
