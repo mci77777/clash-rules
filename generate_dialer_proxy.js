@@ -166,16 +166,34 @@ function overwriteProxyGroups(params) {
   };
 
   const buildProxies = (preferredFirst, extras = []) => {
-    const base = [
-      preferredFirst,
-      proxyName,
-      frontNodeName,
-      manualSelectGroup.name,
-      "DIRECT",
-      ...regionNodeGroups.map(g => g.name),
-      ...extras,
-    ];
-    return [...new Set(base.filter(Boolean))];
+    // 构建完整的代理列表，确保包含所有核心节点
+    const coreProxies = [];
+    
+    // 1. 添加首选代理（AI服务用landingNodeName，其他用proxyName）
+    coreProxies.push(preferredFirst);
+    
+    // 2. 添加另一个核心节点（确保landingNodeName和proxyName都包含）
+    if (preferredFirst === landingNodeName) {
+      // 如果首选是落地节点，则添加全局策略
+      coreProxies.push(proxyName);
+    } else {
+      // 如果首选是全局策略，则添加落地节点
+      coreProxies.push(landingNodeName);
+    }
+    
+    // 3. 添加其他核心节点
+    coreProxies.push(frontNodeName);
+    coreProxies.push(manualSelectGroup.name);
+    coreProxies.push("DIRECT");
+    
+    // 4. 添加所有地区节点
+    coreProxies.push(...regionNodeGroups.map(g => g.name));
+    
+    // 5. 添加额外节点
+    coreProxies.push(...extras);
+    
+    // 去重并过滤空值
+    return [...new Set(coreProxies.filter(Boolean))];
   };
 
   const categoryGroups = [
@@ -185,12 +203,12 @@ function overwriteProxyGroups(params) {
     { name: "🤖 XAI", defaultProxy: landingNodeName },
     { name: "🤖 自定义 AI", defaultProxy: landingNodeName },
     { name: "🎬 奈飞分组", defaultProxy: proxyName },
-    { name: "� 社交媒体", defaultProxy: proxyName },
+    { name: "📱 社交媒体", defaultProxy: proxyName },
     { name: "📺 YouTube", defaultProxy: proxyName },
-    { name: "� Spotify", defaultProxy: proxyName },
+    { name: "🎵 Spotify", defaultProxy: proxyName },
     { name: "🎮 游戏平台", defaultProxy: proxyName },
     { name: "💻 微软服务", defaultProxy: proxyName },
-    { name: "� 苹果服务", defaultProxy: proxyName },
+    { name: "🍎 苹果服务", defaultProxy: proxyName },
     { name: "🔒 IP 伪装", defaultProxy: proxyName },
   ];
 
