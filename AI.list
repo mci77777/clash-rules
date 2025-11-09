@@ -18,6 +18,8 @@ DOMAIN-SUFFIX,wechat.com,DIRECT
 DOMAIN-SUFFIX,weixin.com,DIRECT
 DOMAIN-SUFFIX,wx.qq.com,DIRECT
 DOMAIN-SUFFIX,wxs.qq.com,DIRECT
+DOMAIN-SUFFIX,servicewechat.com,DIRECT
+DOMAIN-SUFFIX,weixinbridge.com,DIRECT
   
 # 微信海外版常用域名直连
 DOMAIN-SUFFIX,sgshort.wechat.com,DIRECT
