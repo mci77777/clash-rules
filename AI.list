@@ -1,5 +1,6 @@
 #
 DOMAIN-SUFFIX,linux.do,🔮 全局策略
+DOMAIN-SUFFIX,factory.ai,🔮 全局策略
 DOMAIN-SUFFIX,cloudflare.com,🔮 全局策略
 DOMAIN-SUFFIX,netflix.com,🎬 奈飞分组
 # 微信进程直连
