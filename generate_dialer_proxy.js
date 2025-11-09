@@ -33,7 +33,7 @@ function getIconForGroup(groupName) {
     case "🤖 Claude":
     case "🤖 Gemini":
     case "🤖 XAI":
-    case "🤖 自定义 AI":
+    case "🤖 wechat":
       return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png";
     case "📺 YouTube":  return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png";
     case "🎵 Spotify":  return "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Spotify.png";
@@ -202,7 +202,7 @@ function overwriteProxyGroups(params) {
     { name: "🤖 Claude", defaultProxy: landingNodeName },
     { name: "🤖 Gemini", defaultProxy: landingNodeName },
     { name: "🤖 XAI", defaultProxy: landingNodeName },
-    { name: "🤖 自定义 AI", defaultProxy: landingNodeName },
+    { name: "🤖 wechat", defaultProxy: landingNodeName },
     { name: "🎬 奈飞分组", defaultProxy: proxyName },
     { name: "📱 社交媒体", defaultProxy: proxyName },
     { name: "📺 YouTube", defaultProxy: proxyName },
