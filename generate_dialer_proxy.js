@@ -202,7 +202,7 @@ function overwriteProxyGroups(params) {
     { name: "🤖 Claude", defaultProxy: landingNodeName },
     { name: "🤖 Gemini", defaultProxy: landingNodeName },
     { name: "🤖 XAI", defaultProxy: landingNodeName },
-    { name: "🤖 wechat", defaultProxy: landingNodeName },
+    { name: "🤖 wechat", defaultProxy: DIRECT },
     { name: "🎬 奈飞分组", defaultProxy: proxyName },
     { name: "📱 社交媒体", defaultProxy: proxyName },
     { name: "📺 YouTube", defaultProxy: proxyName },
