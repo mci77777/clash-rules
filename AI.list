@@ -1,8 +1,3 @@
-#
-DOMAIN-SUFFIX,linux.do,🔮 全局策略
-DOMAIN-SUFFIX,factory.ai,🔮 全局策略
-DOMAIN-SUFFIX,cloudflare.com,🔮 全局策略
-DOMAIN-SUFFIX,netflix.com,🎬 奈飞分组
 # 微信进程直连
 PROCESS-NAME,weixin.exe,DIRECT
 PROCESS-NAME,WeChat.exe,DIRECT
@@ -32,61 +27,4 @@ DOMAIN-SUFFIX,hklong.weixin.qq.com,DIRECT
 DOMAIN-SUFFIX,snsvideo.c2c.wechat.com,DIRECT
 DOMAIN-SUFFIX,socwxsns.video.qq.com,DIRECT
 DOMAIN-SUFFIX,wxapp.tc.qq.com,DIRECT
-
-# 域名关键字匹配
-DOMAIN-KEYWORD,anthropic
-DOMAIN-KEYWORD,Claude
-DOMAIN-KEYWORD,GROK
-DOMAIN-KEYWORD,CURSOR
-DOMAIN-KEYWORD,colab
-DOMAIN-KEYWORD,developerprofiles
-DOMAIN-KEYWORD,generativelanguage
-DOMAIN-KEYWORD,openai
-DOMAIN-KEYWORD,augment
-DOMAIN-KEYWORD,augmentcode
-
-
-DOMAIN,ai.google.dev
-DOMAIN,alkalimakersuite-pa.clients6.google.com
-DOMAIN,makersuite.google.com
-
-# 域名后缀匹配
-DOMAIN-SUFFIX,bagevm.com
-DOMAIN-SUFFIX,packycode.com
-DOMAIN-KEYWORD,bagevm
-DOMAIN-SUFFIX,cursor.sh
-DOMAIN-SUFFIX,cursor-cdn.com
-DOMAIN-SUFFIX,cursorapi.com
-DOMAIN-SUFFIX,cursor.com
-DOMAIN-SUFFIX,workos.com
-DOMAIN-SUFFIX,perplexity.ai
-DOMAIN-SUFFIX,openai.com
-DOMAIN-SUFFIX,genspark.ai
-DOMAIN-SUFFIX,auth0.com
-DOMAIN-SUFFIX,client-api.arkoselabs.com
-DOMAIN-SUFFIX,events.statsigapi.net
-DOMAIN-SUFFIX,featuregates.org
-DOMAIN-SUFFIX,identrust.com
-DOMAIN-SUFFIX,intercom.io
-DOMAIN-SUFFIX,intercomcdn.com
-DOMAIN-SUFFIX,oaistatic.com
-DOMAIN-SUFFIX,oaiusercontent.com
-DOMAIN-SUFFIX,sentry.io
-DOMAIN-SUFFIX,stripe.com
-DOMAIN-SUFFIX,bard.google.com
-DOMAIN-SUFFIX,gemini.google.com
-DOMAIN-SUFFIX,makersuite.google.com
-DOMAIN-SUFFIX,anthropic.com
-DOMAIN-SUFFIX,claude.ai.com
-DOMAIN-SUFFIX,integrate.api.nvidia.com
-DOMAIN-SUFFIX,manus.im
-DOMAIN-SUFFIX,GROK.com
-DOMAIN-SUFFIX,CURSOR.com
-DOMAIN-SUFFIX,x.ai
-DOMAIN-SUFFIX,bard.google.com
-DOMAIN-SUFFIX,deepmind.com
-DOMAIN-SUFFIX,deepmind.google
-DOMAIN-SUFFIX,generativeai.google
-DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
-DOMAIN-SUFFIX,apis.google.com
 
